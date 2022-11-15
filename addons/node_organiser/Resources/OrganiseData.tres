@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://addons/node_organiser/Resources/OrganiseData.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+organise_rules = "Female-Cloth|cloth & female
+Female-Body|body & eye & female & teeth
+Female-Hair|hair & female
+Female-Body|body
+Female-Body|body & test
+Male-Body|body & male
+test"

@@ -1,0 +1,86 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/node_organiser/Ui/OrganiseUI.gd" type="Script" id=1]
+
+[node name="Organise" type="VBoxContainer"]
+margin_right = 196.0
+margin_bottom = 367.0
+script = ExtResource( 1 )
+
+[node name="LB_Title" type="Label" parent="."]
+margin_right = 196.0
+margin_bottom = 31.0
+text = "Organise Nodes by Categories
+"
+
+[node name="LB_Descr" type="Label" parent="."]
+margin_top = 35.0
+margin_right = 196.0
+margin_bottom = 236.0
+text = "Form:
+category-subcategory|search1 & search2
+
+Script will search node that has search1 and search2 in it's name and put it into specified category. 
+
+For Example:
+Cloth-Hat|cap & fedora
+"
+autowrap = true
+
+[node name="Txt_OrganiseRules" type="TextEdit" parent="."]
+unique_name_in_owner = true
+margin_top = 240.0
+margin_right = 196.0
+margin_bottom = 390.0
+rect_min_size = Vector2( 0, 150 )
+text = "Female-Cloth|cloth & female
+Female-Body|body & eye & female & teeth
+Female-Hair|hair & female
+Female-Body|body
+Female-Body|body & test
+Male-Body|body & male"
+smooth_scrolling = true
+wrap_enabled = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+margin_top = 394.0
+margin_right = 196.0
+margin_bottom = 418.0
+
+[node name="CB_Duplicate" type="CheckBox" parent="HBoxContainer"]
+unique_name_in_owner = true
+margin_right = 24.0
+margin_bottom = 24.0
+pressed = true
+
+[node name="LB_Duplicate" type="Label" parent="HBoxContainer"]
+margin_left = 28.0
+margin_top = 5.0
+margin_right = 95.0
+margin_bottom = 19.0
+text = "Duplicate?"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="."]
+margin_top = 422.0
+margin_right = 196.0
+margin_bottom = 446.0
+
+[node name="CB_UniqName" type="CheckBox" parent="HBoxContainer2"]
+unique_name_in_owner = true
+margin_right = 24.0
+margin_bottom = 24.0
+pressed = true
+
+[node name="LB_UniqName" type="Label" parent="HBoxContainer2"]
+margin_left = 28.0
+margin_top = 5.0
+margin_right = 139.0
+margin_bottom = 19.0
+text = "Unicalise  Name?"
+
+[node name="Btn_Organise" type="Button" parent="."]
+unique_name_in_owner = true
+margin_top = 450.0
+margin_right = 196.0
+margin_bottom = 470.0
+text = "Organise"
