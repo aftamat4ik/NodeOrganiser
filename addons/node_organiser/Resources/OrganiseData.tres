@@ -4,10 +4,14 @@
 
 [resource]
 script = ExtResource( 1 )
-organise_rules = "Female-Cloth|cloth & female
-Female-Body|body & eye & female & teeth
-Female-Hair|hair & female
-Female-Body|body
-Female-Body|body & test
-Male-Body|body & male
-test"
+organise_rules = "Female-Cloth|cloth & Female
+Female-Body|body & eye & Female & teeth
+Female-Body|Female & body
+Female-Hair|hair & Female
+Male-Body|body & Male
+Universal-Body|body
+Universal-Body-Test|body & test"
+settings = {
+"is_duplicate": true,
+"is_uniqname": true
+}

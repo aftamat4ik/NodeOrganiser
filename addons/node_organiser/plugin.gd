@@ -37,6 +37,7 @@ func get_window_layout(layout):
 	if organise_ui_instance != null:
 		# save last state of rules
 		plugin_data.organise_rules = organise_ui_instance.get_rules()
+		plugin_data.settings = organise_ui_instance.get_settings()
 		# save changes
 		ResourceSaver.save(data_resource_path, plugin_data)
 
@@ -76,70 +77,81 @@ func organise_selected_nodes(text_rules:String, duplicate:bool, uniq_name:bool):
 	if organised_cat == null:
 		organised_cat = Spatial.new()
 		
+		# define core node name
 		organised_cat.set_name(categories_top_node)
+		# add node to list
 		_selected_node.add_child(organised_cat)
 		organised_cat.set_owner(_edited_scene_root)
 
 	# load categories for each child
 
-	# make list of nodes that are child of selected Skeleton(_selected_node)
+	# make list of nodes that are child of selected (_selected_node)
 	# and then look if this nodes not part of categories
 	# if so - categorise them
 	var subnodes = OrganiseHelpers.collect_children(_selected_node)
 	var lc_catname = categories_top_node.to_lower()
 
 	var rules = text_rules.split("\n") as Array
-	rules = OrganiseRuleHelpers.sort_rules(rules)
+	#rules = OrganiseRuleHelpers.sort_rules(rules)
 
 	# rules should go from longest to shortest
-	rules.invert()
+	#rules.invert()
 
-	# go thru all nodes on selected Skeleton
+	# go thru all nodes on selected
 	for node in subnodes:
 		var l_node_path :String = (node.get_path() as String).to_lower()
 
-		# check if this node not categorised yet
+		# check if this node not categorised yet (if it's categorised then it's path will have lc_catname in it)
 		if node == _selected_node or l_node_path.find(lc_catname) != -1:
 			continue
 		
 		for rule in rules:
 			if OrganiseRuleHelpers.is_rule_valid(rule, node):
-				print(rule)
+				
 				# apply this category to node
 				var cats = OrganiseRuleHelpers.get_rule_list_cats(rule)
+
 				# generate cats subnodes
 				# and store last node into subnode variable
 				var subnode
 				var target_node = organised_cat
+			
 				for cat in cats:
-					if not target_node.has_node(cat):
+					subnode = target_node.get_node_or_null(cat)
+					if subnode == null:
 						subnode = Spatial.new()
 						subnode.set_name(cat)
 						target_node.add_child(subnode)
 						subnode.set_owner(_edited_scene_root)
-					else:
-						subnode = organised_cat.get_node(cat)
-					# build tree
+					
+					# next node should attach to previous like in chain
+					# for example Female-Body-Attachment should be like so:
+					# Female
+					# --Body
+					# ----Attachment
+					# we build up a tree here
 					target_node = subnode
-				# set category for duplicated node
-				var org_name = node.name + " [org]" if node.name.find("[org]") == -1 else node.name
+				#continue
 
-				# if already set
-				if subnode.has_node(org_name):
-					break
+				# set category for duplicated node
+				var organisable_node_name = node.name + " [org]" if node.name.find("[org]") == -1 else node.name
+				
+				# if node is already organised or for some reason there is no target
+				if target_node == null or target_node.has_node(organisable_node_name):
+					continue
 				
 				var organised_node = node.duplicate() if duplicate else node
 				
 				# set new name to node
 				if uniq_name:
-					organised_node.name = org_name
+					organised_node.name = organisable_node_name
 
 				# we should remove node from it's current parent if set
 				var old_parent = organised_node.get_parent()
 				if old_parent != null:
 					old_parent.remove_child(organised_node)
 				
-				subnode.add_child(organised_node)
+				target_node.add_child(organised_node)
 				organised_node.set_owner(_edited_scene_root)
 
 				# stop checks for this node

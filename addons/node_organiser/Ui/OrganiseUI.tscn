@@ -16,7 +16,7 @@ text = "Organise Nodes by Categories
 [node name="LB_Descr" type="Label" parent="."]
 margin_top = 35.0
 margin_right = 196.0
-margin_bottom = 236.0
+margin_bottom = 253.0
 text = "Form:
 category-subcategory|search1 & search2
 
@@ -24,28 +24,30 @@ Script will search node that has search1 and search2 in it's name and put it int
 
 For Example:
 Cloth-Hat|cap & fedora
-"
+
+*Case and order matters"
 autowrap = true
 
 [node name="Txt_OrganiseRules" type="TextEdit" parent="."]
 unique_name_in_owner = true
-margin_top = 240.0
+margin_top = 257.0
 margin_right = 196.0
-margin_bottom = 390.0
+margin_bottom = 407.0
 rect_min_size = Vector2( 0, 150 )
-text = "Female-Cloth|cloth & female
-Female-Body|body & eye & female & teeth
-Female-Hair|hair & female
-Female-Body|body
-Female-Body|body & test
-Male-Body|body & male"
+text = "Female-Cloth|cloth & Female
+Female-Body|body & eye & Female & teeth
+Female-Body|Female & body
+Female-Hair|hair & Female
+Male-Body|body & Male
+Universal-Body|body
+Universal-Body-Test|body & test"
 smooth_scrolling = true
 wrap_enabled = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
-margin_top = 394.0
+margin_top = 411.0
 margin_right = 196.0
-margin_bottom = 418.0
+margin_bottom = 435.0
 
 [node name="CB_Duplicate" type="CheckBox" parent="HBoxContainer"]
 unique_name_in_owner = true
@@ -61,9 +63,9 @@ margin_bottom = 19.0
 text = "Duplicate?"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="."]
-margin_top = 422.0
+margin_top = 439.0
 margin_right = 196.0
-margin_bottom = 446.0
+margin_bottom = 463.0
 
 [node name="CB_UniqName" type="CheckBox" parent="HBoxContainer2"]
 unique_name_in_owner = true
@@ -80,7 +82,7 @@ text = "Unicalise  Name?"
 
 [node name="Btn_Organise" type="Button" parent="."]
 unique_name_in_owner = true
-margin_top = 450.0
+margin_top = 467.0
 margin_right = 196.0
-margin_bottom = 470.0
+margin_bottom = 487.0
 text = "Organise"
