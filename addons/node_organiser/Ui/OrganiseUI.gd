@@ -21,7 +21,8 @@ const data_resource_path = "res://addons/node_organiser/Resources/OrganiseData.t
 func _ready():
 	btn_organise.connect("pressed", self, "on_organise_pressed")
 
-	var res = ResourceLoader.load(data_resource_path) as OrganiseData
+	var res = ResourceLoader.load(data_resource_path)
+	
 	if res.organise_rules.length() > 0:
 		txt_org_rules.text = res.organise_rules
 	else:

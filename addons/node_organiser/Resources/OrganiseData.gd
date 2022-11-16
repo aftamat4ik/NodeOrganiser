@@ -1,6 +1,5 @@
 extends Resource
 tool
-class_name OrganiseData
 
 export (String, MULTILINE) var organise_rules:String setget set_org_rules
 export var settings:Dictionary setget set_settings

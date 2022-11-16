@@ -6,14 +6,11 @@ var organise_ui_instance
 var _editor_interface:EditorInterface
 var _edited_scene_root:Node
 var _selected_node:Node
-var plugin_data:OrganiseData
 
 const categories_top_node = "Categorised"
 const data_resource_path = "res://addons/node_organiser/Resources/OrganiseData.tres"
 
 func _enter_tree():
-	plugin_data = ResourceLoader.load(data_resource_path) as OrganiseData
-
 	if organise_ui_instance == null:
 		# initialise ui
 		organise_ui_instance = preload("res://addons/node_organiser/Ui/OrganiseUI.tscn").instance()
@@ -29,6 +26,7 @@ func _exit_tree():
 func set_window_layout(layout):
 	if organise_ui_instance != null:
 		# load saved organise rules
+		var plugin_data = load_plugin_data()
 		if plugin_data.organise_rules.length() > 0:
 			organise_ui_instance.set_rules(plugin_data.organise_rules)
 
@@ -36,6 +34,7 @@ func set_window_layout(layout):
 func get_window_layout(layout):
 	if organise_ui_instance != null:
 		# save last state of rules
+		var plugin_data = load_plugin_data()
 		plugin_data.organise_rules = organise_ui_instance.get_rules()
 		plugin_data.settings = organise_ui_instance.get_settings()
 		# save changes
@@ -47,6 +46,10 @@ func handles(object):
 		# update selected node each handles
 		_selected_node = get_selected_node()
 
+# loads plugin data
+func load_plugin_data()->Resource:
+	return ResourceLoader.load(data_resource_path)
+
 # Clean-up old item categories
 func clean_categories():
 	var core = _selected_node.get_node_or_null(categories_top_node)
@@ -55,7 +58,6 @@ func clean_categories():
 		# this will also remove all subnodes so no need to loop thru all of them
 		# core.free() # .queue_free() - async version of free()
 		_selected_node.remove_child(core)
-
 
 # main processing function
 func organise_selected_nodes(text_rules:String, duplicate:bool, uniq_name:bool):
