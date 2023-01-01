@@ -53,7 +53,6 @@ margin_bottom = 435.0
 unique_name_in_owner = true
 margin_right = 24.0
 margin_bottom = 24.0
-pressed = true
 
 [node name="LB_Duplicate" type="Label" parent="HBoxContainer"]
 margin_left = 28.0
@@ -71,7 +70,6 @@ margin_bottom = 463.0
 unique_name_in_owner = true
 margin_right = 24.0
 margin_bottom = 24.0
-pressed = true
 
 [node name="LB_UniqName" type="Label" parent="HBoxContainer2"]
 margin_left = 28.0

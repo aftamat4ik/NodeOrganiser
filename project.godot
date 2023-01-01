@@ -9,11 +9,6 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "Resource",
-"class": "OrganiseData",
-"language": "GDScript",
-"path": "res://addons/node_organiser/Resources/OrganiseData.gd"
-}, {
 "base": "Reference",
 "class": "OrganiseHelpers",
 "language": "GDScript",
@@ -25,7 +20,6 @@ _global_script_classes=[ {
 "path": "res://addons/node_organiser/Helpers/OrganiseRuleHelpers.gd"
 } ]
 _global_script_class_icons={
-"OrganiseData": "",
 "OrganiseHelpers": "",
 "OrganiseRuleHelpers": ""
 }

@@ -8,6 +8,7 @@ var _edited_scene_root:Node
 var _selected_node:Node
 
 const categories_top_node = "Categorised"
+const meta_rules_field = "RULES_META"
 const data_resource_path = "res://addons/node_organiser/Resources/OrganiseData.tres"
 
 func _enter_tree():
@@ -21,14 +22,35 @@ func _enter_tree():
 func _exit_tree():
 	if organise_ui_instance != null:
 		remove_control_from_docks(organise_ui_instance)
+		organise_ui_instance.free()
+
+# works every tyme user change currently selected node
+func handles(object):
+	if object is Node:
+		return true
+	return false
+
+func edit(object):
+	# load node's custom rules from it's meta
+	_selected_node = get_selected_node()
+	if _selected_node == null:
+		return
+	
+	if _selected_node.has_meta(meta_rules_field):
+		organise_ui_instance.set_rules(_selected_node.get_meta(meta_rules_field))
+	else:
+		organise_ui_instance.reset_rules()
 
 # restore layout
-func set_window_layout(layout):
-	if organise_ui_instance != null:
-		# load saved organise rules
-		var plugin_data = load_plugin_data()
-		if plugin_data.organise_rules.length() > 0:
-			organise_ui_instance.set_rules(plugin_data.organise_rules)
+# *this dosen't used since UI loads from resource directly on ready
+# * why? because i decided to move organise ui into custom tab
+# * and i don't want to call this stuff every time on new scene
+# func set_window_layout(layout):
+# 	if organise_ui_instance != null:
+# 		# load saved organise rules
+# 		var plugin_data = load_plugin_data()
+# 		if plugin_data.organise_rules.length() > 0:
+# 			organise_ui_instance.set_rules(plugin_data.organise_rules)
 
 # save layout
 func get_window_layout(layout):
@@ -40,12 +62,6 @@ func get_window_layout(layout):
 		# save changes
 		ResourceSaver.save(data_resource_path, plugin_data)
 
-# works every tyme user change currently selected node
-func handles(object):
-	if object is Node:
-		# update selected node each handles
-		_selected_node = get_selected_node()
-
 # loads plugin data
 func load_plugin_data()->Resource:
 	return ResourceLoader.load(data_resource_path)
@@ -54,10 +70,9 @@ func load_plugin_data()->Resource:
 func clean_categories():
 	var core = _selected_node.get_node_or_null(categories_top_node)
 	if core != null:
-		# call free() to destroy node immediately
-		# this will also remove all subnodes so no need to loop thru all of them
-		# core.free() # .queue_free() - async version of free()
+		# *note removing child dosen't free memory so we need to call queue_free afterwards
 		_selected_node.remove_child(core)
+		core.queue_free()
 
 # main processing function
 func organise_selected_nodes(text_rules:String, duplicate:bool, uniq_name:bool):
@@ -68,6 +83,17 @@ func organise_selected_nodes(text_rules:String, duplicate:bool, uniq_name:bool):
 	# check if node is seleted
 	if _selected_node == null or _selected_node.get_child_count() == 0:
 		printerr("Node Organiser: No Subnodes Found in selected!")
+		return
+	
+	# save rules on node's meta field every time they change
+	_selected_node.set_meta(meta_rules_field, text_rules)
+	
+	var lc_catname = categories_top_node.to_lower()
+	
+	# due to number of reasons we can't sort nodes that are already categorised
+	# so if selected node has 
+	if (_selected_node.get_path() as String).to_lower().find(lc_catname) != -1:
+		printerr("We can't sort nodes under categorised section. Move them to another spatial or rename "+ categories_top_node + " node.")
 		return
 	
 	# remove old category nodes
@@ -86,16 +112,14 @@ func organise_selected_nodes(text_rules:String, duplicate:bool, uniq_name:bool):
 		organised_cat.set_owner(_edited_scene_root)
 
 	# load categories for each child
-
 	# make list of nodes that are child of selected (_selected_node)
 	# and then look if this nodes not part of categories
 	# if so - categorise them
 	var subnodes = OrganiseHelpers.collect_children(_selected_node)
-	var lc_catname = categories_top_node.to_lower()
-
+	
 	var rules = text_rules.split("\n") as Array
 	#rules = OrganiseRuleHelpers.sort_rules(rules)
-
+	
 	# rules should go from longest to shortest
 	#rules.invert()
 
@@ -107,7 +131,12 @@ func organise_selected_nodes(text_rules:String, duplicate:bool, uniq_name:bool):
 		if node == _selected_node or l_node_path.find(lc_catname) != -1:
 			continue
 		
+		var node_processed = false
 		for rule in rules:
+			# do not process rules further if already processed
+			if node_processed == true:
+				continue
+			
 			if OrganiseRuleHelpers.is_rule_valid(rule, node):
 				
 				# apply this category to node
@@ -155,9 +184,9 @@ func organise_selected_nodes(text_rules:String, duplicate:bool, uniq_name:bool):
 				
 				target_node.add_child(organised_node)
 				organised_node.set_owner(_edited_scene_root)
-
-				# stop checks for this node
-				break
+				
+				# stop rule checks for this node
+				node_processed = true
 	print("Organise Nodes: Done")
 
 # selected nodes

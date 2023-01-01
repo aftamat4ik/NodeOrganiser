@@ -13,5 +13,5 @@ Universal-Body|body
 Universal-Body-Test|body & test"
 settings = {
 "is_duplicate": true,
-"is_uniqname": true
+"is_uniqname": false
 }

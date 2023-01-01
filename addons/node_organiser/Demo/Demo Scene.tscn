@@ -1,6 +1,15 @@
 [gd_scene format=2]
 
 [node name="Demo Scene" type="Spatial"]
+__meta__ = {
+"RULES_META": "Female-Cloth|cloth & Female
+Female-Body|body & eye & Female & teeth
+Female-Body|Female & body
+Female-Hair|hair & Female
+Male-Body|body & Male
+Universal-Body|body
+Universal-Body-Test|body & test"
+}
 
 [node name="Female cloth helm" type="Spatial" parent="."]
 
@@ -24,30 +33,30 @@
 
 [node name="Cloth" type="Spatial" parent="Categorised/Female"]
 
-[node name="Female cloth helm [org]" type="Spatial" parent="Categorised/Female/Cloth"]
+[node name="Female cloth helm" type="Spatial" parent="Categorised/Female/Cloth"]
 
 [node name="Body" type="Spatial" parent="Categorised/Female"]
 
-[node name="Female body eyes teeth [org]" type="Spatial" parent="Categorised/Female/Body"]
+[node name="Female body eyes teeth" type="Spatial" parent="Categorised/Female/Body"]
 
-[node name="Female body [org]" type="Spatial" parent="Categorised/Female/Body"]
+[node name="Female body" type="Spatial" parent="Categorised/Female/Body"]
 
-[node name="Female body test [org]" type="Spatial" parent="Categorised/Female/Body"]
+[node name="Female body test" type="Spatial" parent="Categorised/Female/Body"]
 
 [node name="Hair" type="Spatial" parent="Categorised/Female"]
 
-[node name="Female hair [org]" type="Spatial" parent="Categorised/Female/Hair"]
+[node name="Female hair" type="Spatial" parent="Categorised/Female/Hair"]
 
 [node name="Universal" type="Spatial" parent="Categorised"]
 
 [node name="Body" type="Spatial" parent="Categorised/Universal"]
 
-[node name="body test [org]" type="Spatial" parent="Categorised/Universal/Body"]
+[node name="body test" type="Spatial" parent="Categorised/Universal/Body"]
 
-[node name="body [org]" type="Spatial" parent="Categorised/Universal/Body"]
+[node name="body" type="Spatial" parent="Categorised/Universal/Body"]
 
 [node name="Male" type="Spatial" parent="Categorised"]
 
 [node name="Body" type="Spatial" parent="Categorised/Male"]
 
-[node name="Male body [org]" type="Spatial" parent="Categorised/Male/Body"]
+[node name="Male body" type="Spatial" parent="Categorised/Male/Body"]
